@@ -33,6 +33,14 @@ if devices['devices']:
     device_id = devices['devices'][0]['id']
     print(f"Device ID: {device_id}")
 
+#currently playing track's ID
+track_id = track['id']
+
+#audio analysis/beats for the track
+analysis = sp.audio_analysis(track_id)
+beats = analysis['beats']
+segments = analysis['segments']
+
 # play song
 if device_id:
     sp.start_playback(device_id=device_id, uris=[track['uri']], position_ms = 0)
