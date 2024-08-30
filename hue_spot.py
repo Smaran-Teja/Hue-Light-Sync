@@ -41,6 +41,25 @@ analysis = sp.audio_analysis(track_id)
 beats = analysis['beats']
 segments = analysis['segments']
 
+loudness_tracker = {}
+for i, segment in enumerate(segments[:]):  
+    start = segment['start']
+    #duration = segment['duration']
+    loudness = segment['loudness_start']
+    #print(f"Segment {i + 1}: Start={start}, Duration={duration}, Loudness={loudness}")
+
+    loudness_tracker[start] = loudness
+
+loudness_tracker = dict(sorted(loudness_tracker.items()))
+
+prev_loud = 0
+def get_loudness_as_brightness(pos):
+    for start in loudness_tracker:
+        if start > pos:
+            return (prev_loud + 60) * 2.125
+        prev_loud = loudness_tracker[start]
+    return prev_loud
+
 # play song
 if device_id:
     sp.start_playback(device_id=device_id, uris=[track['uri']], position_ms = 0)
