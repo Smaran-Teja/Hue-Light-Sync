@@ -17,14 +17,14 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id,
                                                scope=scope))
 
 # song search
-song_name = "i met you when i was 18"
-results = sp.search(q=song_name, limit=1, type="album")
-album = results['albums']['items'][0]
+song_name = "Die for me"
+results = sp.search(q=song_name, limit=1, type="track")
+track = results['tracks']['items'][0]
 
 # song details
-print(f"Album: {album['name']}")
-print(f"Artist: {album['artists'][0]['name']}")
-print(f"URI: {album['uri']}")
+print(f"Song: {track['name']}")
+print(f"Artist: {track['artists'][0]['name']}")
+print(f"URI: {track['uri']}")
 
 # first active device
 devices = sp.devices()
@@ -35,6 +35,6 @@ if devices['devices']:
 
 # play song
 if device_id:
-    sp.start_playback(device_id=device_id, context_uri=album['uri'], position_ms = 2000)
+    sp.start_playback(device_id=device_id, uris=[track['uri']], position_ms = 0)
 else:
     print("No active device found. Please play a song on your Spotify app to activate a device.")
