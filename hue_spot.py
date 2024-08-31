@@ -1,3 +1,4 @@
+import time
 import requests
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
@@ -96,4 +97,46 @@ data = {
     "bri": 100
 }
 
-response = requests.put(url, json=data)
+
+BREATHING_TIME = 0.2
+CALL_TIME = 0.1
+make_call = False
+clock = 0
+# Send the PUT request
+for i in range(len(beats)):
+    confidence = beats[i]["confidence"]
+    duration = beats[i]["duration"]
+    default_brightness = get_loudness_as_brightness(clock)
+
+    print(confidence)
+    print(duration)
+    print(default_brightness)
+    
+
+    if (duration > 0.35):
+        make_call = True
+        brightness = int(confidence * default_brightness * 3)
+        data["bri"] = 255 if brightness>255 else brightness
+        response = requests.put(url, json=data)
+    
+    sleep_time = beats[i]["duration"]
+    clock += beats[i]["duration"]
+    if make_call:
+        clock += CALL_TIME
+        sleep_time -= CALL_TIME
+
+    time.sleep(sleep_time)
+    
+
+    if make_call:
+        data["bri"] = 30 # reset to default
+        response = requests.put(url, json=data)
+        time.sleep(BREATHING_TIME - CALL_TIME)
+        clock += CALL_TIME
+        clock +=BREATHING_TIME
+    
+    else:
+        clock += BREATHING_TIME
+        time.sleep(BREATHING_TIME)
+    
+    make_call = False
