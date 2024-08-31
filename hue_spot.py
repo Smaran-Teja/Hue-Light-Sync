@@ -69,16 +69,6 @@ print(f"Total Beats: {len(beats)}")
 #    print(f"Beat {i + 1}: Start={start}, Confidence={confidence}, Duration: {duration}")
 
 
-
-# play song
-if device_id:
-    sp.start_playback(device_id=device_id, uris=[track['uri']], position_ms = 0)
-else:
-    print("No active device found. Please play a song on your Spotify app to activate a device.")
-
-
-
-
 # Philips hue api credentials from .env file (gitignored)
 bridge_ip = os.environ["BRIDGE_IP"]
 api_username = os.environ["API_USERNAME"]
@@ -102,6 +92,16 @@ BREATHING_TIME = 0.3
 CALL_TIME = 0.14
 make_call = False
 clock = 0
+
+
+# play song
+if device_id:
+    sp.start_playback(device_id=device_id, uris=[track['uri']], position_ms = 0)
+else:
+    print("No active device found. Please play a song on your Spotify app to activate a device.")
+
+
+
 # Send the PUT request
 for i in range(len(beats)):
     confidence = beats[i]["confidence"]
