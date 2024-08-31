@@ -98,8 +98,8 @@ data = {
 }
 
 
-BREATHING_TIME = 0.2
-CALL_TIME = 0.1
+BREATHING_TIME = 0.3
+CALL_TIME = 0.14
 make_call = False
 clock = 0
 # Send the PUT request
