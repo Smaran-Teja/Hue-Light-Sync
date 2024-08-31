@@ -33,10 +33,9 @@ if devices['devices']:
     device_id = devices['devices'][0]['id']
     print(f"Device ID: {device_id}")
 
-#currently playing track's ID
-track_id = track['id']
 
 #audio analysis/beats for the track
+track_id = track['id']
 analysis = sp.audio_analysis(track_id)
 beats = analysis['beats']
 segments = analysis['segments']
@@ -59,6 +58,15 @@ def get_loudness_as_brightness(pos):
             return (prev_loud + 60) * 2.125
         prev_loud = loudness_tracker[start]
     return prev_loud
+
+print(f"Total Beats: {len(beats)}")
+#for i, beat in enumerate(beats[:]): 
+#    start = beat['start']
+#    confidence = beat['confidence']
+#    duration = beat["duration"]
+#    print(f"Beat {i + 1}: Start={start}, Confidence={confidence}, Duration: {duration}")
+
+
 
 # play song
 if device_id:
