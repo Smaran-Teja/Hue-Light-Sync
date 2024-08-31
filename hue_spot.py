@@ -1,8 +1,9 @@
+import requests
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import os
 
-#Spotify app credentials from .env file (gitignored)
+#Spotify api credentials from .env file (gitignored)
 client_id = os.environ["CLIENT_ID"]
 client_secret = os.environ["CLIENT_SECRET"]
 redirect_uri = os.environ["REDIRECT_URI"]
@@ -73,3 +74,26 @@ if device_id:
     sp.start_playback(device_id=device_id, uris=[track['uri']], position_ms = 0)
 else:
     print("No active device found. Please play a song on your Spotify app to activate a device.")
+
+
+
+
+# Philips hue api credentials from .env file (gitignored)
+bridge_ip = os.environ["BRIDGE_IP"]
+api_username = os.environ["API_USERNAME"]
+light_id = "5"  # whichever _single_ light to control
+
+# xy coordinates for the desired color (CIE 1931 color space)
+xy_color = [0.7, 0.27]
+
+
+# Prepare the URL and the data payload
+url = f"http://{bridge_ip}/api/{api_username}/lights/{light_id}/state"
+data = {
+    "on": True,             # Turn the light on (optional if already on)
+    "xy": xy_color,         # Set the color
+    "transition-time": 0,   # Transition time in deciseconds (10 = 1 second)
+    "bri": 100
+}
+
+response = requests.put(url, json=data)
